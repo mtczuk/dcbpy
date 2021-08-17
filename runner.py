@@ -29,7 +29,13 @@ def run_component(
 
     try:
         while True:
-            manager.on_message(queues[id].get(timeout=2))
+            if manager.refuses_to_continue():
+                manager.on_exit()
+                break
+            while queues[id].qsize() != 0 or not manager.can_run_without_new_messages():
+                manager.on_message(queues[id].get(timeout=4))
+            manager.step()
+
     except queue.Empty:
         manager.on_exit()
         print(f"Component {id} stopped because of timeout")

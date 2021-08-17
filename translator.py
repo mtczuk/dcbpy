@@ -1,13 +1,14 @@
-from dataclasses import dataclass
 from structs import BehaviorMessage, Message, Port, PortConfig
 from typing import Callable
 
 
-@dataclass
 class Translator:
-    config: PortConfig
-    id_generator: Callable[[], str]
-    sender: int
+    def __init__(
+        self, config: PortConfig, id_generator: Callable[[], str], sender: int
+    ):
+        self.config = config
+        self.id_generator = id_generator
+        self.sender = sender
 
     def translate(
         self,
@@ -24,7 +25,7 @@ class Translator:
             content=message.content,
             sender=self.sender,
             receiver=receiver_port.component,
-            is_anti=False
+            is_anti=False,
         )
         return translated
 

@@ -23,12 +23,14 @@ class RollbackManager:
         self.take_checkpoint()
 
     def save_message(self, message: Message) -> None:
+        self.lvt = message.exec_ts
         if message.sender == self.id:
             self.sent_messages.append(message)
         else:
             self.received_messages.append(message)
 
     def rollback(self, timestamp: int) -> List[Message]:
+        print("ROLLING BACK FROM", self.lvt, "TO", timestamp)
         to_send: List[Message] = []
         to_send.extend(
             [
@@ -40,9 +42,10 @@ class RollbackManager:
         to_send.extend([m for m in self.received_messages if m.exec_ts >= timestamp])
 
         self.checkpoints = [c for c in self.checkpoints if c.timestamp < timestamp]
-        self.sent_messages = [m for m in self.sent_messages if m.sent_ts < timestamp]
+        self.lvt = self.checkpoints[-1].timestamp + 1
+        self.sent_messages = [m for m in self.sent_messages if m.sent_ts < self.lvt]
         self.received_messages = [
-            m for m in self.received_messages if m.exec_ts < timestamp
+            m for m in self.received_messages if m.exec_ts < self.lvt
         ]
 
         return to_send

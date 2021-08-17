@@ -20,11 +20,20 @@ class ComponentManager:
         for m in messages:
             self.send(self.translator.translate(message=m, lvt=lvt))
 
+    def can_run_without_new_messages(self) -> bool:
+        return True
+
     def init(self) -> None:
-        raise NotImplemented
+        raise NotImplementedError
 
     def on_message(self, message: Message) -> None:
-        raise NotImplemented
+        raise NotImplementedError
+
+    def step(self) -> None:
+        raise NotImplementedError
+
+    def refuses_to_continue(self) -> bool:
+        return False
 
     def on_exit(self) -> None:
         pass
