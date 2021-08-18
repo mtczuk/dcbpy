@@ -1,4 +1,3 @@
-from time import time
 from typing import Any, List, Set
 
 from component_manager import ComponentManager
@@ -12,6 +11,8 @@ class OptimisticManager(ComponentManager):
     counter = 0
     exec_messages: Set[str] = set()
     debug: List[Any] = []
+    checkpoints: int = 0
+    checkpoint_list: List[int] = []
 
     def add_debug(self, m: Message, label: str):
         self.debug.append(
@@ -61,7 +62,7 @@ class OptimisticManager(ComponentManager):
         return res
 
     def refuses_to_continue(self) -> bool:
-        return self.counter > 300
+        return self.counter > 1000
 
     def on_message(self, message: Message) -> None:
         self.counter += 1
@@ -99,6 +100,8 @@ class OptimisticManager(ComponentManager):
             self.exec_messages.add(current_message.id)
             if current_message.exec_ts > self.rollback_manager.lvt:
                 self.rollback_manager.take_checkpoint()
+                self.checkpoints += 1
+            self.checkpoint_list.append(self.checkpoints)
             self.rollback_manager.save_message(current_message)
             state, messages = self.behavior.on_message(
                 state=self.rollback_manager.state,
@@ -137,6 +140,9 @@ class OptimisticManager(ComponentManager):
                     ],
                 )
             )
-        with open(f"outputs/{time()}_testing_{self.id}.txt", "w") as file:
+        with open(f"outputs/checkpoints_{self.id}", "w") as file:
+            for c in self.checkpoint_list:
+                file.write(f"{c}\n")
+        with open(f"outputs/messages_{self.id}.txt", "w") as file:
             for d in self.data:
                 file.write(f"{d}\n")
