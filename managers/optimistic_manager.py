@@ -1,18 +1,28 @@
-from typing import Any, List, Set
+from translator import Translator
+from typing import Any, Callable, List, Set
 
 from component_manager import ComponentManager
 from message_queue import MessageQueue
 from rollback_manager import RollbackManager
-from structs import Message
+from structs import Behavior, Message
 from tabulate import tabulate
 
 
 class OptimisticManager(ComponentManager):
-    counter = 0
-    exec_messages: Set[str] = set()
-    debug: List[Any] = []
-    checkpoints: int = 0
-    checkpoint_list: List[int] = []
+    def __init__(
+        self,
+        id: int,
+        send: Callable[[Message], None],
+        behavior: Behavior,
+        translator: Translator,
+    ) -> None:
+        self.counter = 0
+        self.exec_messages: Set[str] = set()
+        self.debug: List[Any] = []
+        self.checkpoints: int = 0
+        self.checkpoint_list: List[int] = []
+        self.rblen: List[int] = []
+        super().__init__(id, send, behavior, translator)
 
     def add_debug(self, m: Message, label: str):
         self.debug.append(
@@ -73,7 +83,10 @@ class OptimisticManager(ComponentManager):
         if self.rollback_manager.lvt > message.exec_ts:
             self.print("rollback")
             self.add_debug(message, "rollback")
+            prev_lvt = self.rollback_manager.lvt
             to_send = self.rollback_manager.rollback(message.exec_ts)
+            self.checkpoints = len(self.rollback_manager.checkpoints)
+            self.rblen.append(prev_lvt - self.rollback_manager.lvt)
             for m in to_send:
                 self.send(m)
                 self.add_debug(m, "resend")
@@ -115,7 +128,6 @@ class OptimisticManager(ComponentManager):
                 self.add_debug(m, "send new")
                 self.rollback_manager.save_message(m)
             self.rollback_manager.update(state=state, lvt=current_message.exec_ts)
-            self.rollback_manager.state = state
 
             for m in translated_messages:
                 self.send(m)
@@ -123,6 +135,10 @@ class OptimisticManager(ComponentManager):
         self.data.append(self.rollback_manager.lvt)
 
     def on_exit(self) -> None:
+        self.print("rollbacks")
+        self.print(self.rblen)
+        self.print("checkpoints")
+        self.print([c.timestamp for c in self.rollback_manager.checkpoints])
         with open(f"outputs/debug_{self.id}.txt", "w") as file:
             file.write(
                 tabulate(

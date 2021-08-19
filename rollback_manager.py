@@ -30,7 +30,6 @@ class RollbackManager:
             self.received_messages.append(message)
 
     def rollback(self, timestamp: int) -> List[Message]:
-        print("ROLLING BACK FROM", self.lvt, "TO", timestamp)
         to_send: List[Message] = []
         to_send.extend(
             [
