@@ -14,6 +14,7 @@ class Message:
     sender: int
     receiver: int
     is_anti: bool
+    extra: Any = None
 
 
 @dataclass
@@ -30,6 +31,12 @@ class Port:
 
 
 PortConfig = Dict[Port, Port]
+
+
+@dataclass
+class Chart:
+    name: str
+    ys: List[int]
 
 
 class Behavior:

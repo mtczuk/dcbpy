@@ -33,7 +33,7 @@ def run_component(
                 manager.on_exit()
                 break
             while queues[id].qsize() != 0 or not manager.can_run_without_new_messages():
-                manager.on_message(queues[id].get(timeout=4))
+                manager.on_message(queues[id].get(timeout=1))
             manager.step()
 
     except queue.Empty:

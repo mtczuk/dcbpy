@@ -1,5 +1,5 @@
 from typing import Callable, List
-from structs import Behavior, BehaviorMessage, Message
+from structs import Behavior, BehaviorMessage, Chart, Message
 from translator import Translator
 
 
@@ -37,3 +37,6 @@ class ComponentManager:
 
     def on_exit(self) -> None:
         pass
+
+    def get_charts(self) -> List[Chart]:
+        return []

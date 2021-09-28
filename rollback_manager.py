@@ -7,6 +7,7 @@ from typing import Any, List
 class Checkpoint:
     timestamp: int
     state: Any
+    extra: Any = None
 
 
 class RollbackManager:

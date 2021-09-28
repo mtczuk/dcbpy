@@ -1,0 +1,167 @@
+RUNNING WITH GC
+
+
+BEGIN 10000 with GC
+
+real    0m2.225s
+user    0m1.271s
+sys     0m0.224s
+END 10000 with GC
+==============
+
+BEGIN 20000 with GC
+
+real    0m3.538s
+user    0m2.554s
+sys     0m0.347s
+END 20000 with GC
+==============
+
+BEGIN 30000 with GC
+
+real    0m5.103s
+user    0m3.986s
+sys     0m0.519s
+END 30000 with GC
+==============
+
+BEGIN 40000 with GC
+
+real    0m6.244s
+user    0m5.120s
+sys     0m0.679s
+END 40000 with GC
+==============
+
+BEGIN 50000 with GC
+
+real    0m7.563s
+user    0m6.463s
+sys     0m0.788s
+END 50000 with GC
+==============
+
+BEGIN 60000 with GC
+
+real    0m8.937s
+user    0m7.838s
+sys     0m0.913s
+END 60000 with GC
+==============
+
+BEGIN 70000 with GC
+
+real    0m9.511s
+user    0m8.406s
+sys     0m0.972s
+END 70000 with GC
+==============
+
+BEGIN 80000 with GC
+
+real    0m10.971s
+user    0m9.853s
+sys     0m1.125s
+END 80000 with GC
+==============
+
+BEGIN 90000 with GC
+
+real    0m12.266s
+user    0m11.107s
+sys     0m1.225s
+END 90000 with GC
+==============
+
+BEGIN 100000 with GC
+
+real    0m13.721s
+user    0m12.543s
+sys     0m1.392s
+END 100000 with GC
+==============
+
+
+
+RUNNING WITHOUT GC
+
+
+BEGIN 10000 without GC
+
+real    0m2.989s
+user    0m2.019s
+sys     0m0.250s
+END 10000 without GC
+==============
+
+BEGIN 20000 without GC
+
+real    0m8.791s
+user    0m7.624s
+sys     0m0.496s
+END 20000 without GC
+==============
+
+BEGIN 30000 without GC
+
+real    0m16.348s
+user    0m15.048s
+sys     0m0.681s
+END 30000 without GC
+==============
+
+BEGIN 40000 without GC
+
+real    0m32.507s
+user    0m31.311s
+sys     0m0.902s
+END 40000 without GC
+==============
+
+BEGIN 50000 without GC
+
+real    0m41.262s
+user    0m39.985s
+sys     0m1.070s
+END 50000 without GC
+==============
+
+BEGIN 60000 without GC
+
+real    0m57.604s
+user    0m56.252s
+sys     0m1.325s
+END 60000 without GC
+==============
+
+BEGIN 70000 without GC
+
+real    1m11.990s
+user    1m10.591s
+sys     0m1.559s
+END 70000 without GC
+==============
+
+BEGIN 80000 without GC
+
+real    1m36.496s
+user    1m34.131s
+sys     0m1.898s
+END 80000 without GC
+==============
+
+BEGIN 90000 without GC
+
+real    1m56.467s
+user    1m54.532s
+sys     0m2.208s
+END 90000 without GC
+==============
+
+BEGIN 100000 without GC
+
+real    2m48.770s
+user    2m35.313s
+sys     0m4.648s
+END 100000 without GC
+==============
